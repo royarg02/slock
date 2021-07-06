@@ -13,6 +13,9 @@ static const char *colorname[NUMCOLS] = {
 /* treat a cleared input like a wrong password (color) */
 static const int failonclear = 1;
 
+/* time in seconds to cancel lock with mouse movement */
+static const int timetocancel = 4;
+
 /* insert grid pattern with scale 1:1, the size can be changed with logosize */
 static const int logosize = 75;
 static const int logow = 12;	/* grid width and height for right center alignment*/
