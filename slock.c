@@ -187,7 +187,7 @@ readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
 		caps = indicators & 1;
 
 	while (running && !XNextEvent(dpy, &ev)) {
-		running = !((time(NULL) - locktime < timetocancel) && (ev.type == MotionNotify));
+		running = !((time(NULL) - locktime < timetocancel) && (ev.type == MotionNotify || ev.type == KeyPress));
 		if (ev.type == KeyPress) {
 			explicit_bzero(&buf, sizeof(buf));
 			num = XLookupString(&ev.xkey, buf, sizeof(buf), &ksym, 0);
