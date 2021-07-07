@@ -35,6 +35,7 @@
 char *argv0;
 
 static time_t locktime;
+unsigned int lockimmediate = 0;
 
 enum {
 	BACKGROUND,
@@ -203,7 +204,8 @@ readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
 		caps = indicators & 1;
 
 	while (running && !XNextEvent(dpy, &ev)) {
-		running = !((time(NULL) - locktime < timetocancel) && (ev.type == MotionNotify || ev.type == KeyPress));
+		if (!lockimmediate)
+			running = !((time(NULL) - locktime < timetocancel) && (ev.type == MotionNotify || ev.type == KeyPress));
 		if (ev.type == KeyPress) {
 			explicit_bzero(&buf, sizeof(buf));
 			num = XLookupString(&ev.xkey, buf, sizeof(buf), &ksym, 0);
@@ -364,7 +366,8 @@ lockscreen(Display *dpy, struct xrandr *rr, int screen)
 				XRRSelectInput(dpy, lock->win, RRScreenChangeNotifyMask);
 
 			XSelectInput(dpy, lock->root, SubstructureNotifyMask);
-			locktime = time(NULL);
+			if (!lockimmediate)
+				locktime = time(NULL);
 			drawlogo(dpy, lock, INIT);
 			return lock;
 		}
@@ -441,7 +444,7 @@ config_init(Display *dpy)
 static void
 usage(void)
 {
-	die("usage: slock [-v] [cmd [arg ...]]\n");
+	die("usage: slock [-n] [-v] [cmd [arg ...]]\n");
 }
 
 int
@@ -461,6 +464,9 @@ main(int argc, char **argv) {
 	case 'v':
 		fprintf(stderr, "slock-"VERSION"\n");
 		return 0;
+	case 'n':
+		lockimmediate = 1;
+		break;
 	default:
 		usage();
 	} ARGEND
