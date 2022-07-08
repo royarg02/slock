@@ -10,27 +10,17 @@ static const char *colorname[NUMCOLS] = {
 	[CAPS] = "red",         /* CapsLock on */
 };
 
-/*
- * Xresources preferences to load at startup
- */
-ResourcePref resources[] = {
-		{ "color0",       STRING,  &colorname[INIT] },
-		{ "color4",       STRING,  &colorname[INPUT] },
-		{ "color1",       STRING,  &colorname[FAILED] },
-		{ "color3",       STRING,  &colorname[CAPS] },
-};
-
 /* treat a cleared input like a wrong password (color) */
-static const int failonclear = 1;
+static int failonclear = 1;
 
 /* time in seconds before the monitor shuts down */
-static const int monitortime = 5;
+static int monitortime = 5;
 
 /* time in seconds to cancel lock */
-static const int timetocancel = 5;
+static int timetocancel = 5;
 
 /* insert grid pattern with scale 1:1, the size can be changed with logosize */
-static const int logosize = 75;
+static int logosize = 75;
 static const int logow = 12;	/* grid width and height for right center alignment*/
 static const int logoh = 6;
 
@@ -46,4 +36,19 @@ static XRectangle rectangles[9] = {
 	{ 9,	4,	1,	2 },
 	{ 11,	4,	1,	2 },
 
+};
+
+/*
+ * Xresources preferences to load at startup
+ */
+ResourcePref resources[] = {
+		{ "color0",       STRING,  &colorname[INIT] },
+		{ "color4",       STRING,  &colorname[INPUT] },
+		{ "color1",       STRING,  &colorname[FAILED] },
+		{ "color3",       STRING,  &colorname[CAPS] },
+		{ "color5",       STRING,  &colorname[BACKGROUND] },
+		{ "failonclear", INTEGER,  &failonclear },
+		{ "monitortime", INTEGER,  &monitortime },
+		{ "timetocancel",INTEGER,  &timetocancel },
+		{ "logosize",    INTEGER,  &logosize },
 };
