@@ -46,7 +46,7 @@ ResourcePref resources[] = {
 		{ "color4",       STRING,  &colorname[INPUT] },
 		{ "color1",       STRING,  &colorname[FAILED] },
 		{ "color3",       STRING,  &colorname[CAPS] },
-		{ "color5",       STRING,  &colorname[BACKGROUND] },
+		{ "color2",       STRING,  &colorname[BACKGROUND] },
 		{ "failonclear", INTEGER,  &failonclear },
 		{ "monitortime", INTEGER,  &monitortime },
 		{ "timetocancel",INTEGER,  &timetocancel },
