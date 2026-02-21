@@ -15,7 +15,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include <time.h>
 #include <spawn.h>
 #include <sys/types.h>
 #include <X11/extensions/Xrandr.h>
@@ -34,9 +33,6 @@
 #include "util.h"
 
 char *argv0;
-
-static time_t locktime;
-unsigned int lockimmediate = 0;
 
 enum {
 	BACKGROUND,
@@ -205,8 +201,6 @@ readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
 		caps = indicators & 1;
 
 	while (running && !XNextEvent(dpy, &ev)) {
-		if (!lockimmediate)
-			running = !((time(NULL) - locktime < timetocancel) && (ev.type == MotionNotify || ev.type == KeyPress));
 		if (ev.type == KeyPress) {
 			explicit_bzero(&buf, sizeof(buf));
 			num = XLookupString(&ev.xkey, buf, sizeof(buf), &ksym, 0);
@@ -370,8 +364,6 @@ lockscreen(Display *dpy, struct xrandr *rr, int screen)
 				XRRSelectInput(dpy, lock->win, RRScreenChangeNotifyMask);
 
 			XSelectInput(dpy, lock->root, SubstructureNotifyMask);
-			if (!lockimmediate)
-				locktime = time(NULL);
 			drawlogo(dpy, lock, INIT);
 			return lock;
 		}
@@ -448,7 +440,7 @@ config_init(Display *dpy)
 static void
 usage(void)
 {
-	die("usage: slock [-n] [-v] [cmd [arg ...]]\n");
+	die("usage: slock [-v] [cmd [arg ...]]\n");
 }
 
 int
@@ -468,9 +460,6 @@ main(int argc, char **argv) {
 	case 'v':
 		puts("slock-"VERSION);
 		return 0;
-	case 'n':
-		lockimmediate = 1;
-		break;
 	default:
 		usage();
 	} ARGEND

@@ -16,9 +16,6 @@ static int failonclear = 1;
 /* time in seconds before the monitor shuts down */
 static int monitortime = 5;
 
-/* time in seconds to cancel lock */
-static int timetocancel = 5;
-
 /* insert grid pattern with scale 1:1, the size can be changed with logosize */
 static int logosize = 75;
 static const int logow = 12;	/* grid width and height for right center alignment*/
@@ -49,6 +46,5 @@ ResourcePref resources[] = {
 		{ "color2",       STRING,  &colorname[BACKGROUND] },
 		{ "failonclear", INTEGER,  &failonclear },
 		{ "monitortime", INTEGER,  &monitortime },
-		{ "timetocancel",INTEGER,  &timetocancel },
 		{ "logosize",    INTEGER,  &logosize },
 };
